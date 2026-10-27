@@ -1,0 +1,15 @@
+{
+  "title": "Korean notice evidence input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "sources": {
+      "title": "Notice texts or public URLs",
+      "type": "array",
+      "description": "1–50 objects. Each object has exactly one of text (max 200000 characters) or url (public HTTP(S)). Optional id (max 200 characters) and html boolean for supplied HTML. No attachments or browser execution.",
+      "editor": "json",
+      "prefill": [{ "id": "example", "text": "접수마감: 2026.11.15 18:00\n제출서류: PDF 1개, 8페이지 이내" }]
+    }
+  },
+  "required": ["sources"]
+}

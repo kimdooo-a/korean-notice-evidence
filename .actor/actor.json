@@ -1,0 +1,13 @@
+{
+  "actorSpecification": 1,
+  "name": "korean-notice-evidence",
+  "title": "Korean Notice Evidence Extractor",
+  "description": "Extract reviewable Korean deadline and submission requirement candidates with exact text spans. No LLM or API key.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "dockerfile": "../Dockerfile",
+  "readme": "../README.md",
+  "input": "./INPUT_SCHEMA.json",
+  "minMemoryMbytes": 256,
+  "maxMemoryMbytes": 512
+}
