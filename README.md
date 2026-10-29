@@ -6,7 +6,7 @@ This is version 0.1. Market demand and paid conversion have not been validated. 
 
 ## Input and local use
 
-Node.js 22 or newer. The extraction CLI and tests use only Node built-ins:
+Node.js 22 or newer. The extraction CLI uses only Node built-ins. Install the pinned dependencies with `npm ci` before running tests, which also exercise the Apify SDK with in-memory storage and API substitutes:
 
 ```sh
 npm test
@@ -33,9 +33,13 @@ The [Actor definition](.actor/actor.json), [input schema](.actor/INPUT_SCHEMA.js
 
 Pricing: **$0.002 per successfully processed notice ($2 / 1,000)**, including notices with zero candidate lines because inspection was performed. Platform usage is included in the listed price. URL failures and empty/unparseable supplied HTML are written to key-value `ERRORS` and incur no custom event. Invalid batch input fails before work.
 
-The active Console configuration uses the single primary event `notice-processed` (“Notice processed”) at USD 0.002. Synthetic `apify-default-dataset-item` and `apify-actor-start` charges are removed. `Actor.pushData(result, 'notice-processed')` couples output and the custom event; the loop stops on the SDK's spending-limit signal. Set a budget of at least $0.002: SDK 3.7.0 can allow the first event even when the budget is below one event's price. Developer runs are not proof of a real customer's charge or payout.
+The active Console configuration uses the single primary event `notice-processed` (“Notice processed”) at USD 0.002. Synthetic `apify-default-dataset-item` and `apify-actor-start` prices are removed. The loop stops on the SDK's spending-limit signal. Developer runs are not proof of a real customer's charge or payout.
 
-Local safety update, not yet deployed: `charge-guard.mjs` requires an explicit finite budget and checks capacity before saving each processed notice. It prevents the pinned SDK's first-event exception from storing a notice when less than one event fits the remaining budget. The deployed version still needs this update; no Console pricing was changed.
+Local safety update, not yet deployed: `charge-guard.mjs` requires an explicit finite budget and compares the next total event cost against it using exact decimal arithmetic before each save. It also checks SDK capacity and verifies that the named event count increased by one. This blocks SDK 3.7.0's first-event exception and rounded capacity near a price boundary, including a $0.00199999 budget for a $0.002 event. The deployed version still needs this update; no Console pricing was changed.
+
+The local Apify entrypoint persists `NOTICE_PROCESSING_STARTED` before processing. An existing marker, dataset item, or named event charge disables automatic retry, including after migration or restart. Completed and partially completed runs keep the marker. Inspect previous output, charges, and key-value `ERRORS` before explicitly starting a new run with fresh storage; blindly resubmitting completed inputs can charge them again. `runSources` still supports partial batches and stops at the budget signal.
+
+Dataset storage and event charging are **not atomic** in SDK 3.7.0: output is saved before the charge request. A failed or interrupted charge may leave an output item with an unknown or missing charge. The local code records runtime errors in `ERRORS` when storage is available and blocks replay; it cannot roll back an item or guarantee exactly-once billing. A hard termination may prevent `ERRORS` from being written. This guard assumes one process per run and persistent default storage; it is not a lock for concurrent processes. Cloud restart, migration, and charge-failure behavior still require verification before public deployment.
 
 Official implementation references: [actor.json contract](https://docs.apify.com/actors/development/actor-definition/actor-json), [input schema](https://docs.apify.com/actors/development/actor-definition/input-schema), [PPE behavior](https://docs.apify.com/actors/monetize/pay-per-event), [SDK PPE](https://docs.apify.com/sdk/js/docs/concepts/pay-per-event), [Actor SDK](https://docs.apify.com/sdk/js/reference/class/Actor). See [research and licensing notes](RESEARCH.md) and [verification](VALIDATION.md).
 
