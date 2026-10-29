@@ -1,5 +1,11 @@
 # 검증 상태 — 2026-10-27
 
+## 2026-10-30 추가 — 저장 전 과금 용량 가드
+
+`src/charge-guard.mjs`를 추가해 명시적 유한예산과 단일 positive notice-processed 설정을 요구하고, 저장 전에 이벤트1회 용량을 확인한다. SDK0→Infinity와 첫 이벤트 예외에 의한 단가 미만 예산 저장을 차단한다. 최종 로컬 `npm test`12/12 통과(기존10+가드2), diff check 통과. 초기에는 브라우저 연결이 불가했다. 이후 연결은 복구됐으나 이 가드의 Cloud 배포는 수행하지 않았으며 공개본이 고쳐졌다고 주장하지 않는다.
+
+메인 수익 후속 기록: Galaxy Con `docs/intel/opportunities/2026-10-30-apify-revenue-next.md`. 이번 변경은 세션 종료 시 별도 저장소 소스 이력으로 보존한다. 최신 과금 가드의 공개 Cloud 배포는 미완료다.
+
 - Node v24.19.0, npm 11.17.0. `npm test` 10/10 통과: 한국어/emoji UTF-16 span 일치, 복수날짜, 연도·시각 누락, 잘못된 날짜, HTML, 상한, 입력 검증, 과금상한 중단, 실패 무과금 경로, 내부IP 차단.
 - `node src/cli.mjs examples/input.json` 합성 공고 JSONL 확인. 날짜 2개를 보존하며 `finalDeadline:null`, 불확실성 출력.
 - Apify SDK 3.7.0 로컬 entrypoint를 `ACTOR_TEST_PAY_PER_EVENT=true`, 토큰 제거, 로컬 storage로 실제 실행: exit 0, dataset 1개, `ERRORS=[]`. 실제 청구 아님. SDK API 선언의 `pushData(item,eventName):Promise<ChargeResult>` 확인.

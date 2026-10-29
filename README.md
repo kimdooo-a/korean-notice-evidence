@@ -35,6 +35,8 @@ Pricing: **$0.002 per successfully processed notice ($2 / 1,000)**, including no
 
 The active Console configuration uses the single primary event `notice-processed` (“Notice processed”) at USD 0.002. Synthetic `apify-default-dataset-item` and `apify-actor-start` charges are removed. `Actor.pushData(result, 'notice-processed')` couples output and the custom event; the loop stops on the SDK's spending-limit signal. Set a budget of at least $0.002: SDK 3.7.0 can allow the first event even when the budget is below one event's price. Developer runs are not proof of a real customer's charge or payout.
 
+Local safety update, not yet deployed: `charge-guard.mjs` requires an explicit finite budget and checks capacity before saving each processed notice. It prevents the pinned SDK's first-event exception from storing a notice when less than one event fits the remaining budget. The deployed version still needs this update; no Console pricing was changed.
+
 Official implementation references: [actor.json contract](https://docs.apify.com/actors/development/actor-definition/actor-json), [input schema](https://docs.apify.com/actors/development/actor-definition/input-schema), [PPE behavior](https://docs.apify.com/actors/monetize/pay-per-event), [SDK PPE](https://docs.apify.com/sdk/js/docs/concepts/pay-per-event), [Actor SDK](https://docs.apify.com/sdk/js/reference/class/Actor). See [research and licensing notes](RESEARCH.md) and [verification](VALIDATION.md).
 
 Original package code is available under the [MIT License](LICENSE). The Apify SDK is separately licensed under Apache-2.0; see [third-party notices](THIRD_PARTY_NOTICES.md). No Galaxy Con application core or third-party Actor code was copied.
