@@ -1,0 +1,12 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Korean notice evidence output",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Notice evidence candidates",
+      "description": "One dataset item per successfully processed notice, including notices with no candidates. Evidence spans refer to the returned text; finalDeadline remains null and requires human review.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    }
+  }
+}

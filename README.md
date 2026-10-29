@@ -2,7 +2,7 @@
 
 Turn Korean notice text or public HTML URLs into reviewable deadline and submission-requirement **candidates**, with exact supporting text spans. No LLM, external model key, or inferred final deadline.
 
-This is a 0.1 deployment candidate. Market demand and paid conversion have not been validated. Code created before November 13, 2026 is preexisting work for any later Apart Research sprint; it is not sprint research or an experimental result.
+This is version 0.1. Market demand and paid conversion have not been validated. Code created before November 13, 2026 is preexisting work for any later Apart Research sprint; it is not sprint research or an experimental result.
 
 ## Input and local use
 
@@ -29,11 +29,11 @@ An empty candidate list does not establish that a requirement is absent. HTML st
 
 ## Apify deployment and pricing
 
-The [Actor definition](.actor/actor.json), [input schema](.actor/INPUT_SCHEMA.json), [Dockerfile](Dockerfile), and lockfile are included. Build privately first, run the synthetic sample, inspect dataset spans and `ERRORS`, and measure resource costs. Cloud build, publication, payout eligibility and real billing are not verified locally.
+The [Actor definition](.actor/actor.json), [input schema](.actor/INPUT_SCHEMA.json), [Dockerfile](Dockerfile), and lockfile are included. Apify cloud build and synthetic runs have been verified. On October 29, a four-source cloud test produced two successful results and stopped at the configured $0.004 event budget. See [verification](VALIDATION.md). This is a developer test, not customer revenue or proof of market demand.
 
-Proposed pricing: **$0.002 per successfully processed notice ($2 / 1,000)**, including notices with zero candidate lines because inspection was performed. This is a test price, not a revenue forecast. URL failures and empty/unparseable supplied HTML are written to key-value `ERRORS` and incur no custom event. Invalid batch input fails before work.
+Pricing: **$0.002 per successfully processed notice ($2 / 1,000)**, including notices with zero candidate lines because inspection was performed. Platform usage is included in the listed price. URL failures and empty/unparseable supplied HTML are written to key-value `ERRORS` and incur no custom event. Invalid batch input fails before work.
 
-In Console → Publication → monetization, choose pay per event, add custom primary event `notice-processed`, title “Notice processed”, description “One notice text inspected and evidence JSON delivered”, price USD 0.002. Remove the synthetic `apify-default-dataset-item` and `apify-actor-start` events for this pricing proposal to avoid duplicate or undisclosed charges. Do not publish until Console event names match the code. `Actor.pushData(result, 'notice-processed')` couples output and the custom event; the loop stops on the SDK's spending-limit signal. Use a low test spending limit and verify billed counts before releasing. Price does not include a separately charged usage option; verify Console presentation.
+The active Console configuration uses the single primary event `notice-processed` (“Notice processed”) at USD 0.002. Synthetic `apify-default-dataset-item` and `apify-actor-start` charges are removed. `Actor.pushData(result, 'notice-processed')` couples output and the custom event; the loop stops on the SDK's spending-limit signal. Set a budget of at least $0.002: SDK 3.7.0 can allow the first event even when the budget is below one event's price. Developer runs are not proof of a real customer's charge or payout.
 
 Official implementation references: [actor.json contract](https://docs.apify.com/actors/development/actor-definition/actor-json), [input schema](https://docs.apify.com/actors/development/actor-definition/input-schema), [PPE behavior](https://docs.apify.com/actors/monetize/pay-per-event), [SDK PPE](https://docs.apify.com/sdk/js/docs/concepts/pay-per-event), [Actor SDK](https://docs.apify.com/sdk/js/reference/class/Actor). See [research and licensing notes](RESEARCH.md) and [verification](VALIDATION.md).
 
