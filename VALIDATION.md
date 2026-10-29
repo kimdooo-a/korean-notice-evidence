@@ -1,5 +1,15 @@
 # 검증 상태 — 2026-10-27
 
+## 2026-10-30 후속 — 별도 Cloud 0.1.1 통합 검증
+
+아래 미배포 설명은 이전 시점 기록이다. 독립 Astra 검토와 로컬 20/20 후 별도 Git 브랜치의 c6daeb1로 version 0.1/build 0.1.1을 빌드했다. [정리된 서버 응답](validation/cloud-guard-20261030.json)에 실제 옵션·이벤트 수·비용을 보존했다.
+
+- 정상/예산: run Vl7frCTu3shfQMatd, 512MB/60초/$0.004. 실패 HTML 1건은 ERRORS, 정상 2건 출력·notice-processed 2회, 후속 1건은 예산 중단. NOTICE_PROCESSING_STARTED 영속 기록 확인.
+- 같은 run Resurrect 1회: 의도한 FAILED, 기존 상태 감지 오류, 출력 2건·이벤트 2회 유지. 서버 응답 usageTotalUsd 0.0003879333655536175(초기 실행+재시작).
+- 단가 직전: run 3WP69hegDtY1fB9sX, 서버 옵션 maxTotalChargeUsd 0.00199999 그대로 확인. SUCCEEDED·출력0·이벤트0, usageTotalUsd 0.0001834796712001165.
+- 비용은 개발자 플랫폼 사용량이며 고객 결제·매출이 아니다. 둘 합계 약 $0.000571413이며 빌드·추후 저장 비용을 포함하지 않는다. $5 월한도 도달 시 서비스 중지·무료잔여 $4.99를 실행 전에 다시 확인했다.
+- 실제 live migration·Cloud 청구 실패 주입·실제 고객 청구는 미검증이다. 저장/청구 비원자성과 단일 프로세스 전제는 계속 적용한다. 공개 기본 태그 전환은 별도 확인한다.
+
 ## 2026-10-30 추가 — 재진입 차단과 엄격한 소수 예산 경계
 
 - `src/run-actor.mjs`에서 첫 처리 전에 `NOTICE_PROCESSING_STARTED`를 영속 저장한다. 마커·기존 dataset itemCount·기존 `notice-processed` 청구 중 하나라도 있으면 자동 재실행을 거절한다. 정상 종료·부분 처리에도 마커를 유지한다. `runSources`의 부분 처리·예산 신호 중단 계약은 유지한다.

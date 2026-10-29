@@ -1,0 +1,58 @@
+{
+  "actorId": "XYXLYxGiQGEq7IPro",
+  "buildNumber": "0.1.1",
+  "buildId": "eDVAXhx71V8uIJ3mo",
+  "sourceCommit": "c6daeb1dccab695756cb8cc3444a139359b2092e",
+  "normalAndResurrect": {
+    "id": "Vl7frCTu3shfQMatd",
+    "status": "FAILED",
+    "statusMessage": "The Actor has been resurrected from SUCCEEDED status.",
+    "buildId": "eDVAXhx71V8uIJ3mo",
+    "options": {
+      "build": "0.1.1",
+      "timeoutSecs": 60,
+      "memoryMbytes": 512,
+      "maxTotalChargeUsd": 0.004,
+      "maxItems": null,
+      "isMaxTotalChargeUsdSetByUser": true,
+      "diskMbytes": 1024
+    },
+    "chargedEventCounts": {
+      "notice-processed": 2
+    },
+    "defaultDatasetId": "kYFgqrQMTxvRxQm0S",
+    "defaultKeyValueStoreId": "m1DhHojxjwDXCaBj5",
+    "usageTotalUsd": 0.0003879333655536175
+  },
+  "underBudget": {
+    "id": "3WP69hegDtY1fB9sX",
+    "status": "SUCCEEDED",
+    "buildId": "eDVAXhx71V8uIJ3mo",
+    "options": {
+      "build": "0.1.1",
+      "timeoutSecs": 60,
+      "memoryMbytes": 512,
+      "maxTotalChargeUsd": 0.00199999,
+      "maxItems": null,
+      "isMaxTotalChargeUsdSetByUser": true,
+      "diskMbytes": 2048
+    },
+    "chargedEventCounts": {
+      "notice-processed": 0
+    },
+    "defaultDatasetId": "utSqJBFSXVwHf7af6",
+    "defaultKeyValueStoreId": "4GNWhcBj2ckG3zGgj",
+    "usageTotalUsd": 0.0001834796712001165
+  },
+  "outputCounts": {
+    "normal": 2,
+    "afterResurrection": 2,
+    "underBudget": 0
+  },
+  "notVerified": [
+    "live migration",
+    "injected Cloud charge failure",
+    "actual paying customer charge or payout"
+  ],
+  "note": "Developer test. FAILED resurrection is expected replay rejection; custom event count remains 2. Usage values exclude future storage costs."
+}
